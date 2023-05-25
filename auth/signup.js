@@ -11,7 +11,7 @@ const db = admin.firestore();
 const validateUserInput = (data) => {
   const schema = Joi.object({
     name: Joi.string()
-      .required(),
+    .required(),
     email: Joi.string()
       .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
       .trim()
@@ -33,7 +33,7 @@ const validateUserInput = (data) => {
 
 // Route untuk Sign Up
 router.post('/', async (req, res) => {
-  const { email, password, confirmPassword } = req.body;
+  const { name, email, password, confirmPassword } = req.body;
 
   // Validasi input pengguna
   const { error } = validateUserInput(req.body);
@@ -56,6 +56,7 @@ router.post('/', async (req, res) => {
 
     // Simpan data pengguna ke Firestore
     await db.collection('users').doc(email).set({
+      name: name,
       email: email,
       password: hashedPassword
     });
