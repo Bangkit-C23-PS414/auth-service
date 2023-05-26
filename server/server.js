@@ -13,11 +13,11 @@ app.use(express.json());
 app.use("/", (req, res) => {
   res.send("Hello World! This is the main page of the server. Please use the correct routes. #LifeAtBangkit");
 });
-app.use("/signup", signupRouter);
-app.use("/signin", signinRouter);
-app.use("/forgot-password", forgotpassRouter);
-app.use("/verify-code", verifycodeRouter);
-app.use("/reset-password", resetpassRouter);
+app.use("/auth/register", signupRouter);
+app.use("/auth/login", signinRouter);
+app.use("/auth/forgot-password", forgotpassRouter);
+app.use("/auth/verify-code", verifycodeRouter);
+app.use("/auth/reset-password", resetpassRouter);
 
 // Mulai server
 app.listen(8080, () => {
