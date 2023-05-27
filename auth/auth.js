@@ -1,11 +1,8 @@
-require('dotenv').config();
-const secret = process.env.SECRET;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-
+require('dotenv').config({ path: 'SECRET_KEY.env'});
 // Konfigurasi JWT
-const JWT_SECRET =secret;
-
+const JWT_SECRET = process.env.SECRET_KEY;
 // Create JWToken
 const generateToken = (email) => {
   return jwt.sign({ email: email }, JWT_SECRET);

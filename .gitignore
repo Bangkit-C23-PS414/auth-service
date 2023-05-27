@@ -1,7 +1,7 @@
 #file
 package.json
 package-lock.json
-secret.env
+SECRET_KEY.env
 serviceAccountKey.json
 # Logs
 log/
