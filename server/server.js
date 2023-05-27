@@ -10,7 +10,7 @@ const resetpassRouter = require("./../auth/resetpass");
 app.use(express.json());
 
 // Routes
-app.use("/", (req, res) => {
+app.get("/", (req, res) => {
   res.send("Hello World! This is the main page of the server. Please use the correct routes. #LifeAtBangkit");
 });
 app.use("/auth/register", signupRouter);
