@@ -13,7 +13,7 @@ const validateUserInput = (data) => {
     name: Joi.string()
     .required(),
     email: Joi.string()
-      .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+      .email({ minDomainSegments: 2, tlds: { allow: true} })
       .trim()
       .required(),
     password: Joi.string()

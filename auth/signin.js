@@ -11,7 +11,7 @@ const db = admin.firestore();
 const validateUserInput = (data) => {
   const schema = Joi.object({
     email: Joi.string()
-      .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+      .email({ minDomainSegments: 2, tlds: { allow: true} })
       .trim()
       .required(),
     password: Joi.string().required()
