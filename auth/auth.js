@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 // Konfigurasi JWT
-const JWT_SECRET = 'secret';
+const JWT_SECRET ='secret'; //ganti
 
 // Fungsi untuk membuat token JWT
 const generateToken = (email) => {
