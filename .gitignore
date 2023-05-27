@@ -4,6 +4,7 @@ package-lock.json
 secret.env
 serviceAccountKey.json
 # Logs
+log/
 logs
 *.log
 npm-debug.log*
