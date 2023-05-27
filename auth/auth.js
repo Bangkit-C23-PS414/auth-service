@@ -1,9 +1,10 @@
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const crypto = require('crypto');
+require("dotenv").config();
+const secret = process.env.SECRET;
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 // Konfigurasi JWT
-const JWT_SECRET = crypto.randomBytes(64).toString('hex');
+const JWT_SECRET = 'secret';
 
 // Fungsi untuk membuat token JWT
 const generateToken = (email) => {
@@ -18,5 +19,5 @@ const verifyPassword = async (password, hashedPassword) => {
 module.exports = {
   JWT_SECRET,
   generateToken,
-  verifyPassword
+  verifyPassword,
 };
