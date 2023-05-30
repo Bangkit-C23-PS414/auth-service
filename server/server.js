@@ -8,6 +8,7 @@ const resetpassRouter = require("./../auth/resetpass");
 
 // Middleware untuk mengizinkan body request dalam format JSON
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
 
 // Routes
 app.get("/", (req, res) => {
