@@ -13,7 +13,6 @@ router.get('/', async (req, res) => {
             return res.status(404).send('User not found');
         }
 
-        const userData = userDoc.data();
         res.status(200).send('OK');
 
     }

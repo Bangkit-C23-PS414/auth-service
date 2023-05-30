@@ -5,6 +5,7 @@ const signinRouter = require("./../auth/signin");
 const forgotpassRouter = require("../auth/forgotpass");
 const verifycodeRouter = require("./../auth/verifycode");
 const resetpassRouter = require("./../auth/resetpass");
+const profileRouter = require("./../auth/profile");
 
 // Middleware untuk mengizinkan body request dalam format JSON
 app.use(express.json());
@@ -19,6 +20,7 @@ app.use("/auth/login", signinRouter);
 app.use("/auth/forgot-password", forgotpassRouter);
 app.use("/auth/verify-code", verifycodeRouter);
 app.use("/auth/reset-password", resetpassRouter);
+app.use("/profile", profileRouter);
 
 // Mulai server
 app.listen(8080, () => {
