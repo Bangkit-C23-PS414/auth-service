@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
         if (!userDoc.exists) {
             return res.status(404).send('User not found');
         }
-
+        
         res.status(200).send('OK');
 
     }
