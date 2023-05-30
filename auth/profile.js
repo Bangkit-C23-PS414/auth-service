@@ -3,7 +3,6 @@ const router = express.Router();
 const admin = require('firebase-admin');
 
 const db = admin.firestore();
-
 // Route untuk mengambil data user dari Firestore
 router.get('/', async (req, res) => {
     const { email } = req.body;
