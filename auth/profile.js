@@ -1,7 +1,4 @@
 const express = require('express');
-const auth = require('./auth');
-const Joi = require('joi');
-const userLog = require('../log/logger');
 const router = express.Router();
 const admin = require('firebase-admin');
 
@@ -9,7 +6,7 @@ const db = admin.firestore();
 
 // Route untuk mengambil data user dari Firestore
 router.get('/', async (req, res) => {
-    const { email } = req.body; // email didapat dari JWT yang di-decode
+    const { email } = req.body;
 
     try {
         const userDoc = await db.collection('users').doc(email).get();
@@ -18,7 +15,8 @@ router.get('/', async (req, res) => {
         }
 
         const userData = userDoc.data();
-        res.status(200).send(userData);
+        res.status(200).send('OK');
+
     }
     catch (error) {
         console.error('Error fetching user data:', error);
