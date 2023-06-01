@@ -2,19 +2,17 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const admin = require('firebase-admin');
+const db = admin.firestore();
 const {JWT_SECRET} = require('./auth');
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 const verify = promisify(jwt.verify);
-
-const db = admin.firestore();
 
 // Route untuk Reset Password
 router.post('/', async (req, res) => {
   const { token, newPassword } = req.body;
     try {
       const decoded = await verify(token, JWT_SECRET);
-  
       const email = decoded.email;
   
       // Hash the new password
@@ -24,8 +22,9 @@ router.post('/', async (req, res) => {
       await db.collection('users').doc(email).update({
         password: hashedPassword
       });
-  
-      res.sendStatus(200);
+      
+      res.status(200).send('Password updated');
+
     } catch (error) {
       console.error('Error resetting password:', error);
       res.sendStatus(500);
