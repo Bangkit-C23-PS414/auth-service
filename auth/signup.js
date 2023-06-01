@@ -61,7 +61,7 @@ router.post('/', async (req, res) => {
       password: hashedPassword
     });
 
-    res.sendStatus(200);
+    res.status(200).send(req.body);
   } catch (error) {
     console.error('Error creating user:', error);
     res.sendStatus(500);
