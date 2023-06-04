@@ -26,6 +26,12 @@ router.post('/', async (req, res) => {
       return res.status(401).send('Verification code has expired');
     }
 
+    //Delete verification code and expiration
+    await db.collection('users').doc(email).update({
+      verificationCode: admin.firestore.FieldValue.delete(),
+      verificationCodeExpiration: admin.firestore.FieldValue.delete()
+    });
+    
     // Generate token for password reset
     const token = jwt.sign({ email: email }, JWT_SECRET, { expiresIn: '1h' });
     res.json({ token });

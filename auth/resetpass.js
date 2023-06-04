@@ -22,12 +22,6 @@ router.post('/', async (req, res) => {
       await db.collection('users').doc(email).update({
         password: hashedPassword
       });
-
-      //Delete verification code and expiration
-      await db.collection('users').doc(email).update({
-        verificationCode: admin.firestore.FieldValue.delete(),
-        verificationCodeExpiration: admin.firestore.FieldValue.delete()
-      });
       
       res.status(200).send('Password updated');
 
