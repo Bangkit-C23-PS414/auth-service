@@ -3,29 +3,28 @@ const router = express.Router();
 const nodemailer = require('nodemailer');
 const admin = require('firebase-admin');
 const db = admin.firestore();
-require('dotenv').config({ path: 'SECRET_KEY.env'});
-const PASS=process.env.PASS;
+require('dotenv').config({ path: 'SECRET_KEY.env' });
+const PASS = process.env.PASS;
 
 // Konfigurasi Nodemailer
 const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
+  host: 'smtp.gmail.com',
   port: 465,
   secure: true,
   auth: {
-    user: "wancikhaimah@gmail.com", 
+    user: 'wancikhaimah@gmail.com',
     pass: PASS
   }
 });
 
-
 // Fungsi helper untuk mengirim email
 const sendEmail = async (email, subject, message) => {
   const mailOptions = {
+    from: 'wancikhaimah@gmail.com',
     to: email,
     subject: subject,
-    text: message,
+    html: message
   };
-
   await transporter.sendMail(mailOptions);
 };
 
@@ -42,18 +41,24 @@ router.post('/', async (req, res) => {
     // Generate verification code
     const verificationCode = Math.floor(100000 + Math.random() * 900000);
 
-    // Save verification code to Firestore
+    // Calculate verification code expiration time
+    const expirationTime = Date.now() + 3600000; // 1 hour
+
+    // Save verification code and expiration time to Firestore
     await db.collection('users').doc(email).update({
-      verificationCode: verificationCode.toString()
+      verificationCode: verificationCode.toString(),
+      verificationCodeExpiration: expirationTime
     });
 
     // Send verification code via email
     const emailSubject = 'Verification Code';
-    const emailMessage = `Your verification code is: ${verificationCode}`;
-    
+    const emailMessage = `<p>Your verification code is: ${verificationCode}
+                          <br/><b>Verification code is valid for 1 hour.</b>
+                          <br/><i>If you didn't request this code, ignore this email.</i></p>`;
+
     await sendEmail(email, emailSubject, emailMessage);
 
-    res.sendStatus(200);
+    res.status(200).send('Verification code sent');
   } catch (error) {
     console.error('Error sending verification code:', error);
     res.sendStatus(500);
