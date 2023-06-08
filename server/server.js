@@ -5,8 +5,11 @@ const signinRouter = require("./../auth/signin");
 const forgotpassRouter = require("../auth/forgotpass");
 const verifycodeRouter = require("./../auth/verifycode");
 const resetpassRouter = require("./../auth/resetpass");
-const profileRouter = require("./../auth/profile");
-const editRouter = require("./../auth/edit");
+
+const authMiddleware = require("./auth-middleware")
+const profileRouter = require("../profile/get-profile");
+const editProfileRouter = require("../profile/edit-profile");
+const updateAvatarRouter = require("../profile/update-avatar");
 
 // Middleware untuk mengizinkan body request dalam format JSON
 app.use(express.json());
@@ -21,8 +24,9 @@ app.use("/auth/login", signinRouter);
 app.use("/auth/forgot-password", forgotpassRouter);
 app.use("/auth/verify-code", verifycodeRouter);
 app.use("/auth/reset-password", resetpassRouter);
-app.use("/profile", profileRouter);
-app.use("/edit", editRouter);
+app.use("/profile/me", profileRouter);
+app.use("/profile/edit", editProfileRouter);
+app.use("/profile/avatar", authMiddleware, updateAvatarRouter);
 
 // Mulai server
 app.listen(8080, () => {

@@ -5,7 +5,7 @@ const db = admin.firestore();
 const jwt = require('jsonwebtoken');
 const { promisify } = require('util');
 const verify = promisify(jwt.verify);
-const { JWT_SECRET } = require('./auth');
+const { JWT_SECRET } = require('../auth/auth');
 
 // Route untuk mengambil data user dari Firestore
 router.get('/', async (req, res) => {
