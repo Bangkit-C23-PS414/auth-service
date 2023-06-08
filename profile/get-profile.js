@@ -21,7 +21,12 @@ router.get('/', async (req, res) => {
 
     // Ambil data pengguna dan kirim sebagai respons
     const userData = userDoc.data();
-    res.send({name: userData.name, email: userData.email});
+    res.send({
+      name: userData.name,
+      email: userData.email,
+      avatarUrl: userData.avatarUrl,
+      blurHash: userData.blurHash
+    });
   } catch (error) {
     console.error('Error fetching user data:', error);
     res.sendStatus(500);
