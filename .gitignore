@@ -1,8 +1,7 @@
-#file
-package.json
-package-lock.json
+# Secrets
 SECRET_KEY.env
 serviceAccountKey.json
+
 # Logs
 *.log
 npm-debug.log*
