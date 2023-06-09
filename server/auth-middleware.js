@@ -8,10 +8,7 @@ const authMiddleware = async (req, res, next) => {
   const token = req.headers.authorization
 
   if (!token) {
-    return res.status(403).json({
-      status: "Access forbidden",
-      message: "Token is required"
-    })
+    return res.status(403).json({ message: "Token is required" })
   }
 
   try {
@@ -20,10 +17,7 @@ const authMiddleware = async (req, res, next) => {
 
     return next()
   } catch (err) {
-    return res.status(401).json({
-      status: "User unauthorized",
-      message: "Token is invalid"
-    })
+    return res.status(401).json({ message: "Token is invalid" })
   }
 }
 

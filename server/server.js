@@ -25,8 +25,9 @@ app.use("/auth/login", signinRouter);
 app.use("/auth/forgot-password", forgotpassRouter);
 app.use("/auth/verify-code", verifycodeRouter);
 app.use("/auth/reset-password", resetpassRouter);
-app.use("/profile/me", profileRouter);
-app.use("/profile/edit", editProfileRouter);
+
+app.use("/profile/me", authMiddleware, profileRouter);
+app.use("/profile/edit", authMiddleware, editProfileRouter);
 app.use("/profile/update-avatar", authMiddleware, updateAvatarRouter);
 app.use("/profile/change-password", authMiddleware, changePasswordRouter);
 

@@ -27,10 +27,7 @@ router.post('/', upload.single('avatar'), async (req, res) => {
 
     // Check file
     if (!req.file) {
-      return res.status(400).send({
-        status: "Error",
-        message: "Image not uploaded properly"
-      })
+      return res.status(400).send({ message: "Image not uploaded properly" })
     }
 
     // Crop image
@@ -55,10 +52,7 @@ router.post('/', upload.single('avatar'), async (req, res) => {
   } catch (error) {
     console.error(error)
 
-    res.status(500).json({
-      status: "Error",
-      message: "Cannot update avatar"
-    })
+    res.status(500).json({ message: "Cannot update avatar" })
   } finally {
     // Clean up
     if (req.file && fs.existsSync(req.file.path)) {

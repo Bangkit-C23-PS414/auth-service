@@ -21,10 +21,7 @@ router.post('/', async (req, res) => {
     // Validate form
     const { error } = validateUserInput(req.body)
     if (error) {
-      return res.status(400).send({
-        status: "Error",
-        message: "Form validation failed"
-      })
+      return res.status(400).send({ message: "Form validation failed" })
     }
 
     // Get user input
@@ -38,10 +35,7 @@ router.post('/', async (req, res) => {
     // Check password
     const passwordMatch = await auth.verifyPassword(oldPassword, userData.password);
     if (!passwordMatch) {
-      return res.status(400).send({
-        status: "Error",
-        message: "Old password is incorrect"
-      })
+      return res.status(400).send({ message: "Old password is incorrect" })
     }
 
     // Update user password
@@ -55,10 +49,7 @@ router.post('/', async (req, res) => {
   } catch (error) {
     console.error(error)
 
-    res.status(500).json({
-      status: "Error",
-      message: "Cannot update avatar"
-    })
+    res.status(500).json({ message: "Cannot update avatar" })
   }
 });
 
