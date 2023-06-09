@@ -10,7 +10,7 @@ const router = express.Router();
 const db = admin.firestore();
 const storage = admin.storage();
 const upload = multer({
-  dest: 'uploads',
+  dest: '/tmp',
   fileFilter: (req, file, cb) => {
     if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
       cb(null, true);
