@@ -5,6 +5,8 @@ const fs = require('fs');
 const sharp = require('sharp');
 const { encode } = require("blurhash");
 const { randomUUID } = require('crypto');
+require('dotenv').config({ path: 'SECRET_KEY.env' });
+const STORAGE_LINK = process.env.STORAGE_LINK;
 
 const router = express.Router();
 const db = admin.firestore();
@@ -41,7 +43,7 @@ router.post('/', upload.single('avatar'), async (req, res) => {
 
     // Upload filename
     const avatarFile = randomUUID() + ".jpg"
-    const avatarUrl = "https://storage.googleapis.com/c23-ps414-statics/users/" + avatarFile
+    const avatarUrl = STORAGE_LINK + avatarFile
     await storage.bucket('c23-ps414-statics').upload(filepath, { destination: 'users/' + avatarFile })
 
     // Get user data
