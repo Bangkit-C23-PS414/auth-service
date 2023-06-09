@@ -24,6 +24,14 @@ const upload = multer({
 router.post('/', upload.single('avatar'), async (req, res) => {
   try {
     const { email } = req.auth
+    
+    // Check file
+    if (!req.file) {
+      return res.status(400).send({
+        status: "Error",
+        message: "Image not uploaded properly"
+      })
+    }
 
     // Crop image
     const filepath = `${req.file.path}-resized`
@@ -48,7 +56,8 @@ router.post('/', upload.single('avatar'), async (req, res) => {
       data: { avatarUrl, blurHash }
     })
   } catch (error) {
-    console.log(error)
+    console.error(error)
+
     res.status(500).json({
       status: "Error",
       message: "Cannot update avatar"
