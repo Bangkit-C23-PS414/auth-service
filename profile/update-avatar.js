@@ -4,7 +4,7 @@ const multer = require('multer');
 const fs = require('fs');
 const sharp = require('sharp');
 const { encode } = require("blurhash");
-const crypto = require('crypto')
+const { randomUUID } = require('crypto');
 
 const router = express.Router();
 const db = admin.firestore();
@@ -40,12 +40,22 @@ router.post('/', upload.single('avatar'), async (req, res) => {
     const blurHash = encode(clamped, metadata.width, metadata.height, 4, 4)
 
     // Upload filename
-    const filename = crypto.createHash('md5').update(email).digest('hex') + ".jpg"
-    const avatarUrl = "https://storage.googleapis.com/c23-ps414-statics/users/" + filename
-    await storage.bucket('c23-ps414-statics').upload(filepath, { destination: 'users/' + filename })
+    const avatarFile = randomUUID() + ".jpg"
+    const avatarUrl = "https://storage.googleapis.com/c23-ps414-statics/users/" + avatarFile
+    await storage.bucket('c23-ps414-statics').upload(filepath, { destination: 'users/' + avatarFile })
+
+    // Get user data
+    const userDoc = await db.collection('users').doc(email).get();
+    const userData = userDoc.data();
+
+    // Delete previously uploaded avatar
+    if (userData.avatarFile) {
+      // Let run async
+      storage.bucket('c23-ps414-statics').file('users/' + userData.avatarFile).delete().catch({})
+    }
 
     // Update data firestore
-    await db.collection('users').doc(email).update({ avatarUrl, blurHash });
+    await db.collection('users').doc(email).update({ avatarFile, avatarUrl, blurHash });
 
     // Send response
     res.status(200).json({
