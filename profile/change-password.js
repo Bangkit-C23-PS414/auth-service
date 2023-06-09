@@ -10,7 +10,7 @@ const validateUserInput = (data) => {
   const schema = Joi.object({
     oldPassword: Joi.string().min(6).required(),
     newPassword: Joi.string().min(6).required(),
-    confirmNewPassword: Joi.any().valid(Joi.ref('newPassword')).required(),
+    confirmNewPassword: Joi.ref('newPassword'),
   })
 
   return schema.validate(data)
