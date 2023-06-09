@@ -10,6 +10,7 @@ const authMiddleware = require("./auth-middleware")
 const profileRouter = require("../profile/get-profile");
 const editProfileRouter = require("../profile/edit-profile");
 const updateAvatarRouter = require("../profile/update-avatar");
+const changePasswordRouter = require("../profile/change-password");
 
 // Middleware untuk mengizinkan body request dalam format JSON
 app.use(express.json());
@@ -26,7 +27,8 @@ app.use("/auth/verify-code", verifycodeRouter);
 app.use("/auth/reset-password", resetpassRouter);
 app.use("/profile/me", profileRouter);
 app.use("/profile/edit", editProfileRouter);
-app.use("/profile/avatar", authMiddleware, updateAvatarRouter);
+app.use("/profile/update-avatar", authMiddleware, updateAvatarRouter);
+app.use("/profile/change-password", authMiddleware, changePasswordRouter);
 
 // Mulai server
 app.listen(8080, () => {

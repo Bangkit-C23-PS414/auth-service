@@ -1,14 +1,14 @@
 const express = require('express');
-const router = express.Router();
 const admin = require('firebase-admin');
-const db = admin.firestore();
-const storage = admin.storage();
 const multer = require('multer');
 const fs = require('fs');
 const sharp = require('sharp');
 const { encode } = require("blurhash");
 const crypto = require('crypto')
 
+const router = express.Router();
+const db = admin.firestore();
+const storage = admin.storage();
 const upload = multer({
   dest: 'uploads',
   fileFilter: (req, file, cb) => {
@@ -24,7 +24,7 @@ const upload = multer({
 router.post('/', upload.single('avatar'), async (req, res) => {
   try {
     const { email } = req.auth
-    
+
     // Check file
     if (!req.file) {
       return res.status(400).send({
@@ -51,10 +51,7 @@ router.post('/', upload.single('avatar'), async (req, res) => {
     await db.collection('users').doc(email).update({ avatarUrl, blurHash });
 
     // Send response
-    res.status(200).json({
-      message: 'Data updated',
-      data: { avatarUrl, blurHash }
-    })
+    res.status(200).json({ message: 'Data updated' })
   } catch (error) {
     console.error(error)
 
@@ -64,10 +61,11 @@ router.post('/', upload.single('avatar'), async (req, res) => {
     })
   } finally {
     // Clean up
-    if (fs.existsSync(req.file.path)) {
+    if (req.file && fs.existsSync(req.file.path)) {
       fs.unlinkSync(req.file.path)
     }
-    if (fs.existsSync(req.file.path + "-resized")) {
+
+    if (req.file && fs.existsSync(req.file.path + "-resized")) {
       fs.unlinkSync(req.file.path + "-resized")
     }
   }
