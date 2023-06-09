@@ -1,8 +1,7 @@
-#file
-package.json
-package-lock.json
+# Secrets
 SECRET_KEY.env
 serviceAccountKey.json
+
 # Logs
 *.log
 npm-debug.log*
@@ -132,3 +131,6 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Uploads files
+uploads/
