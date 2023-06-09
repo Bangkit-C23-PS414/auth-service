@@ -35,8 +35,6 @@ router.post('/', async (req, res) => {
     const userDoc = await db.collection('users').doc(email).get()
     const userData = userDoc.data()
 
-    console.log(userData)
-
     // Check password
     const passwordMatch = await auth.verifyPassword(oldPassword, userData.password);
     if (!passwordMatch) {
