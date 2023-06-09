@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
 
     // Get user input
     const { email } = req.auth
-    const { oldPassword, newPassword, confirmNewPassword } = req.body
+    const { oldPassword, newPassword } = req.body
 
     // Get user data
     const userDoc = await db.collection('users').doc(email).get()
