@@ -32,10 +32,13 @@ router.post('/', upload.single('avatar'), async (req, res) => {
 
     // Crop image
     const filepath = `${req.file.path}-resized`
-    await sharp(req.file.path).resize(300).jpeg().toFile(filepath)
+    await sharp(req.file.path).resize(300, 300).jpeg().toFile(filepath)
 
     // Calculate blurhash
-    const { data: pixels, info: metadata } = await sharp(filepath).raw().ensureAlpha().resize(32).toBuffer({ resolveWithObject: true })
+    const { data: pixels, info: metadata } = await sharp(filepath)
+      .raw().ensureAlpha()
+      .resize(32, 32)
+      .toBuffer({ resolveWithObject: true })
     const clamped = new Uint8ClampedArray(pixels)
     const blurHash = encode(clamped, metadata.width, metadata.height, 4, 4)
 
