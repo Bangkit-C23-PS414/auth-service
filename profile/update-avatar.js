@@ -48,7 +48,10 @@ router.post('/', upload.single('avatar'), async (req, res) => {
     await db.collection('users').doc(email).update({ avatarUrl, blurHash });
 
     // Send response
-    res.status(200).json({ message: 'Data updated' })
+    res.status(200).json({
+      message: 'Data updated',
+      data: { avatarUrl, blurHash }
+    })
   } catch (error) {
     console.error(error)
 
