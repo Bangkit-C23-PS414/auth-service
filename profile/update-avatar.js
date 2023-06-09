@@ -9,8 +9,10 @@ const { randomUUID } = require('crypto');
 const router = express.Router();
 const db = admin.firestore();
 const storage = admin.storage();
+
+// Multer buffer config
 const upload = multer({
-  dest: 'uploads',
+  storage: multer.memoryStorage(),
   fileFilter: (req, file, cb) => {
     if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
       cb(null, true);
@@ -20,6 +22,18 @@ const upload = multer({
     }
   }
 });
+
+// Upload file to gcs async
+const uploadFile = async (bucketFile, buffer, mimetype) => new Promise((resolve, reject) => {
+  const stream = bucketFile.createWriteStream({
+    resumable: false,
+    metadata: { contentType: mimetype }
+  })
+
+  stream.on('error', (err) => reject(err))
+  stream.on('finish', (res) => resolve(res))
+  stream.end(buffer)
+})
 
 router.post('/', upload.single('avatar'), async (req, res) => {
   try {
@@ -31,21 +45,21 @@ router.post('/', upload.single('avatar'), async (req, res) => {
     }
 
     // Crop image
-    const filepath = `${req.file.path}-resized`
-    await sharp(req.file.path).resize(300, 300).jpeg().toFile(filepath)
+    const resizedImage = await sharp(req.file.buffer).resize(300, 300).jpeg().toBuffer()
 
     // Calculate blurhash
-    const { data: pixels, info: metadata } = await sharp(filepath)
+    const { data: pixels, info: metadata } = await sharp(req.file.buffer)
       .raw().ensureAlpha()
       .resize(32, 32)
       .toBuffer({ resolveWithObject: true })
     const clamped = new Uint8ClampedArray(pixels)
     const blurHash = encode(clamped, metadata.width, metadata.height, 4, 4)
 
-    // Upload filename
+    // Upload file
     const avatarFile = randomUUID() + ".jpg"
     const avatarUrl = "https://storage.googleapis.com/c23-ps414-statics/users/" + avatarFile
-    await storage.bucket('c23-ps414-statics').upload(filepath, { destination: 'users/' + avatarFile })
+    const bucketFile = storage.bucket('c23-ps414-statics').file('users/' + avatarFile)
+    await uploadFile(bucketFile, resizedImage, req.file.mimetype)
 
     // Get user data
     const userDoc = await db.collection('users').doc(email).get();
@@ -69,15 +83,6 @@ router.post('/', upload.single('avatar'), async (req, res) => {
     console.error(error)
 
     res.status(500).json({ message: "Cannot update avatar" })
-  } finally {
-    // Clean up
-    if (req.file && fs.existsSync(req.file.path)) {
-      fs.unlinkSync(req.file.path)
-    }
-
-    if (req.file && fs.existsSync(req.file.path + "-resized")) {
-      fs.unlinkSync(req.file.path + "-resized")
-    }
   }
 });
 
