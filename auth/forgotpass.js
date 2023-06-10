@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: 'wancikhaimah@gmail.com',
+    user: 'recoffeeryapp@gmail.com',
     pass: PASS
   }
 });
@@ -20,7 +20,7 @@ const transporter = nodemailer.createTransport({
 // Fungsi helper untuk mengirim email
 const sendEmail = async (email, subject, message) => {
   const mailOptions = {
-    from: 'wancikhaimah@gmail.com',
+    from: 'recoffeeryapp@gmail.com',
     to: email,
     subject: subject,
     html: message
