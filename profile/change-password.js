@@ -8,8 +8,8 @@ const auth = require('../auth/auth');
 const db = admin.firestore();
 const validateUserInput = (data) => {
   const schema = Joi.object({
-    oldPassword: Joi.string().min(6).required(),
-    newPassword: Joi.string().min(6).required(),
+    oldPassword: Joi.string().min(8).required(),
+    newPassword: Joi.string().min(8).required(),
     confirmNewPassword: Joi.any().valid(Joi.ref('newPassword')).required(),
   })
 
